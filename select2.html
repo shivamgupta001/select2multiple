@@ -1,0 +1,248 @@
+<!-- Created By Shivam Gupta -->
+<!DOCTYPE html>
+<html>
+<head>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css" rel="stylesheet" />
+	<style>
+		body{
+			display : flex ;
+			justify-content : center;
+			align-items : center;
+			height : 100vh;
+			width : 100%;
+			background-color : yellowgreen;
+		}
+		.selectContainer{
+			width : 200px;
+			height : 25px !important;
+		}
+		
+		.random{
+			color : red;
+			
+		}
+		
+		/* adding extra css for list selected  */
+		.select2-container .selectedDisplayList ul{
+			display : flex !important;
+			align-items : baseline;
+		}
+		.select2-container .selectedDisplayList ul li:nth-child(n+2):not(:last-child)::before{
+			content : ', '
+		}
+		/*.select2-container .selectedDisplayList ul li:nth-child(n+1):not(:last-child)::after{
+			content : '\00a0';
+		}*/
+		
+		
+		/* select2 checkbox css */
+		
+		.select2-container--default .select2-results__option[aria-selected] input[type="checkbox"] {
+			display : none;
+		}
+		.select2-container--default .select2-results__option[aria-selected] input[type="checkbox"]+label span{
+			margin-left : 30px;
+			white-space : nowrap;
+		}
+		.select2-container--default .select2-results__option[aria-selected=false] input[type="checkbox"]+label{
+			background-image: url("checkbox.png");
+			background-position: 5px 0px;
+			background-repeat: no-repeat;
+			display: inline-block;
+			width: 25px;
+		}
+		.select2-container--default .select2-results__option[aria-selected=true] input[type="checkbox"]+label{
+			background-image: url("checkbox.png");
+			background-position: -15px 0px;
+			background-repeat: no-repeat;
+			display: inline-block;
+			width: 25px;
+		}
+		.multiDropdownCss{
+			width : 500px !important;
+			min-width : 100px !important;
+			
+		}
+	</style>
+</head>
+<body>
+
+	<select multiple data-placeholder="Select a city" id="CountryIdList" class= "abc" style="width:200px">
+			
+			<option value="0">Select All</option>
+			<option value="AL">India </option>
+			<option value="Am">B</option>
+			
+	</select>
+
+	<select multiple id="CountryIdList1"  data-placeholder="Select a Country" style="width:300px" >
+			<option value="0">Select All</option>
+			<option value="AL">A has</option>
+			<option value="Am">B</option>
+			<option value="An">C</option>
+			<option value="Ak">D</option>
+			<option value="WY1">E</option>
+			<option value="WY2">F</option>
+			<option value="WY3">G</option>
+			<option value="WY4">H</option>
+			<option value="WY5">I</option>
+			<option value="WY6">J</option>
+			<option value="WY7">K</option>
+			<option value="WY8">T</option>
+			<option value="WY9">W</option>
+			
+	</select>
+	
+	
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.full.min.js"></script>
+<script>
+	
+	
+	$.fn.select2multiple  = function(){
+		
+		$(this).select2({
+			templateSelection : templateSel,
+			templateResult: formatState,
+			
+			containerCssClass: "selectedDisplayList",
+			matcher: matchStart
+		});
+				
+		// events list here
+		$(this).on({
+			'change' : handleChange,
+			'select2:selecting' :  handleSelecting,
+			'select2:unselecting' : handleUnselecting
+		
+		//	'select2:opening' : handleOpening,
+		//	'select2:open': handleOpen
+			
+		});
+		
+		function matchStart (term, text) {
+		  if(term.term && text.text ){
+		  	if (text.text.toUpperCase().indexOf(term.term.toUpperCase().trim()) == 0) {
+			    return text;
+			}
+			return false;
+		  }
+		  return text;
+		}
+
+		function handleChange(e) {
+			
+			//this returns all the selected item
+			
+			var title = $(this).find("option:selected").map(function () {
+				return $(this).text();
+			}).get().join(', ');
+			
+			$(".selectedDisplayList input")[0].value ="";
+			$(".selectedDisplayList input").on('keydown', function(e){
+				//handle backspace code 
+				if(e.keyCode === 8 && e.target.value === ""){
+					var lastChild = $(".select2-container .select2-selection--multiple ul.select2-selection__rendered li[title]:last")[0];
+					if(lastChild){
+						lastChild.remove();
+						var value = lastChild.innerHTML.trim();
+						var sel = $(this).val();
+						var len = $(this).find("option").length;
+						if(sel.length === len){
+							sel.shift();
+						}
+						$(this).val(sel.slice(0,sel.length-1)).trigger('change');	
+
+						var dropList = $(this).find('.select2-results li');
+						for(var i=0;i<dropList.length;i++){
+							if($(dropList[i]).find('span')[0].innerHTML.trim() === value)
+								dropList[i].setAttribute('aria-selected',false);
+							else if($(dropList[i]).find('span')[0].innerHTML.trim() === "Select All")
+									dropList[i].setAttribute('aria-selected',false);
+						}
+						$(".selectedDisplayList input")[0].value = " ";
+						
+					}
+				}
+			}.bind(this));
+
+			$(".select2-container .select2-selection--multiple ul.select2-selection__rendered li:not(:last-child)").attr("title",title);
+			
+			$(this).on("select2:closing",function(e){
+				e.preventDefault();
+				$(this).unbind("select2:closing");
+			});
+
+		}
+
+		function handleSelecting(e){
+			
+			if(e.params.args.originalEvent && e.params.args.originalEvent.button == 2)
+				e.preventDefault();
+			else {
+				if(e.params.args.data.id == 0){
+					$(this).find("option").prop("selected","selected");
+					$(this).trigger("change");
+				}else{
+					var len = $(this).find("option").length;
+					var selOpt = $(this).val();
+					if(selOpt != null && selOpt.length == len -2){
+						$(this).find("option").prop("selected","selected");
+						$(this).trigger("change");
+					}
+				}
+			}
+		}
+		
+		function handleUnselecting(e){
+			if(e.params.args.originalEvent && e.params.args.originalEvent.button == 2)
+				e.preventDefault();
+			else{
+				if(e.params.args.data.id == 0){
+					$(this).find("option").removeAttr("selected");
+					$(this).trigger("change");
+				}else{
+					var len = $(this).find("option").length;
+					var selOpt = $(this).val();
+					if(selOpt != null && selOpt.length == len){
+						$(this).find("option[value=\"0\"]").removeAttr("selected");
+						$(this).trigger("change");
+					}
+				}
+			}
+		}
+		
+		
+
+		function templateSel(data , container){
+			$(container).empty();
+			$(container).removeClass("select2-selection__choice");
+			if(data.id != 0){
+				return data.text;
+			}else{
+				
+			}
+		}
+		function formatState (state) {
+		  if (!state.id) { return state.text; }
+		  var dynamicId = state.id + Math.random() + state.text;
+		  var $state = $(
+			'<div><input type="checkbox" id='+dynamicId+'/ ><label for='+dynamicId+'><span>' + state.text + '</span></label></div>'
+		  );
+		  return $state;
+		}
+
+		
+		
+	}
+	$("#CountryIdList").select2multiple();
+	$("#CountryIdList1").select2multiple();
+	
+	
+	
+
+
+</script>
+</body>
+</html>
