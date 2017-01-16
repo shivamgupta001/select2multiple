@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>select 2 project demo</title>
+	<link rel="stylesheet" type="text/css" href="../select2/dist/css/select2.min.css">
+	<style type="text/css">
+		body {
+			background-color: yellowgreen;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			position: absolute;
+			left: 0px;
+			right : 0px;
+			top : 0px;
+			bottom: 0px;
+		}
+	</style>
+</head>
+<body>
+
+<select id="select1" style="width:160px" data-placeholder="Select a city">
+	<option></option>	
+	<option value="1">value-1</option>
+	<option value="2">value-2</option>
+	<option value="3">value-3</option>
+	<option value="4">value-4</option>
+	<option value="5">value-5</option>
+	<option value="6">value-6</option>
+	<option value="7">value-7</option>
+	<option value="8">value-8</option>	
+</select>
+
+<script type="text/javascript" src="../select2/vendor/jquery-2.1.0.js"></script>
+<script type="text/javascript" src="../select2/dist/js/select2.min.js"></script>
+<script type="text/javascript">
+	$("#select1").select2({
+		allowClear : true
+	});
+</script>
+</body>
+</html>

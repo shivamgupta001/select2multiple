@@ -71,7 +71,8 @@
 			
 			<option value="0">Select All</option>
 			<option value="AL">India </option>
-			<option value="Am">B</option>
+			<option value="B">B </option>
+			
 			
 	</select>
 
@@ -115,10 +116,6 @@
 			'change' : handleChange,
 			'select2:selecting' :  handleSelecting,
 			'select2:unselecting' : handleUnselecting
-		
-		//	'select2:opening' : handleOpening,
-		//	'select2:open': handleOpen
-			
 		});
 		
 		function matchStart (term, text) {
@@ -187,7 +184,10 @@
 				}else{
 					var len = $(this).find("option").length;
 					var selOpt = $(this).val();
-					if(selOpt != null && selOpt.length == len -2){
+					if(selOpt == null){
+						selOpt = [];	
+					}
+					if(selOpt.length == len -2){
 						$(this).find("option").prop("selected","selected");
 						$(this).trigger("change");
 					}
