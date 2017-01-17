@@ -40,24 +40,31 @@
 		.select2-container--default .select2-results__option[aria-selected] input[type="checkbox"] {
 			display : none;
 		}
-		.select2-container--default .select2-results__option[aria-selected] input[type="checkbox"]+label span{
-			margin-left : 30px;
-			white-space : nowrap;
+		.select2-container--default .select2-results__option[aria-selected]{
+			display:  flex;
 		}
-		.select2-container--default .select2-results__option[aria-selected=false] input[type="checkbox"]+label{
+		.select2-container--default .select2-results__option[aria-selected=true] div::before{
+			content : '';
 			background-image: url("checkbox.png");
-			background-position: 5px 0px;
 			background-repeat: no-repeat;
 			display: inline-block;
-			width: 25px;
+			width : 18px;
+			height: 18px;
+			margin: -1px 4px 0px 0px;
+		    background-position: -18px 0px;
 		}
-		.select2-container--default .select2-results__option[aria-selected=true] input[type="checkbox"]+label{
+		.select2-container--default .select2-results__option[aria-selected=false] div::before{
+			
+			content : '';
 			background-image: url("checkbox.png");
-			background-position: -15px 0px;
 			background-repeat: no-repeat;
 			display: inline-block;
-			width: 25px;
+			width : 18px;
+			height: 18px;
+			margin: -1px 4px 0px 0px;
+		    background-position: 0px 0px;
 		}
+
 		.multiDropdownCss{
 			width : 500px !important;
 			min-width : 100px !important;
@@ -70,15 +77,15 @@
 	<select multiple data-placeholder="Select a city" id="CountryIdList" class= "abc" style="width:200px">
 			
 			<option value="0">Select All</option>
-			<option value="AL">India </option>
-			<option value="B">B </option>
+			<option value="AL">Kingdom Of Saudi Arab is soviet union Kingdom Of Saudi Arab is soviet union Kingdom Of Saudi Arab is soviet union</option>
+			
 			
 			
 	</select>
 
-	<select multiple id="CountryIdList1"  data-placeholder="Select a Country" style="width:300px" >
+	<select  id="CountryIdList1"  data-placeholder="Select a Country" style="width:300px" >
 			<option value="0">Select All</option>
-			<option value="AL">A has</option>
+			<option value="AL">A has A hasA hasA hasA hasA hasA hasA hasA has</option>
 			<option value="Am">B</option>
 			<option value="An">C</option>
 			<option value="Ak">D</option>
@@ -183,10 +190,7 @@
 					$(this).trigger("change");
 				}else{
 					var len = $(this).find("option").length;
-					var selOpt = $(this).val();
-					if(selOpt == null){
-						selOpt = [];	
-					}
+					var selOpt = $(this).val() || [];
 					if(selOpt.length == len -2){
 						$(this).find("option").prop("selected","selected");
 						$(this).trigger("change");
@@ -226,9 +230,9 @@
 		}
 		function formatState (state) {
 		  if (!state.id) { return state.text; }
-		  var dynamicId = state.id + Math.random() + state.text;
+		  
 		  var $state = $(
-			'<div><input type="checkbox" id='+dynamicId+'/ ><label for='+dynamicId+'><span>' + state.text + '</span></label></div>'
+			'<div><input type="checkbox"/ ></div><label>' + state.text + '</label>'
 		  );
 		  return $state;
 		}
@@ -237,7 +241,7 @@
 		
 	}
 	$("#CountryIdList").select2multiple();
-	$("#CountryIdList1").select2multiple();
+	$("#CountryIdList1").select2();
 	
 	
 	
