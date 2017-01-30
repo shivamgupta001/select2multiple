@@ -12,16 +12,8 @@
 			width : 100%;
 			background-color : yellowgreen;
 		}
-		.selectContainer{
-			width : 200px;
-			height : 25px !important;
-		}
-		
-		.random{
-			color : red;
 			
-		}
-		
+				
 		/* adding extra css for list selected  */
 		.select2-container .selectedDisplayList ul{
 			display : flex !important;
@@ -30,11 +22,6 @@
 		.select2-container .selectedDisplayList ul li:nth-child(n+2):not(:last-child)::before{
 			content : ', '
 		}
-		/*.select2-container .selectedDisplayList ul li:nth-child(n+1):not(:last-child)::after{
-			content : '\00a0';
-		}*/
-		
-		
 		/* select2 checkbox css */
 		
 		.select2-container--default .select2-results__option[aria-selected] input[type="checkbox"] {
@@ -65,11 +52,7 @@
 		    background-position: 0px 0px;
 		}
 
-		.multiDropdownCss{
-			width : 500px !important;
-			min-width : 100px !important;
-			
-		}
+		
 	</style>
 </head>
 <body>
@@ -83,9 +66,9 @@
 			
 	</select>
 
-	<select  id="CountryIdList1"  data-placeholder="Select a Country" style="width:300px" >
+	<select  multiple id="CountryIdList1"  data-placeholder="Select a Country" style="width:300px" >
 			<option value="0">Select All</option>
-			<option value="AL">A has A hasA hasA hasA hasA hasA hasA hasA has</option>
+			<option value="AL">A has A</option>
 			<option value="Am">B</option>
 			<option value="An">C</option>
 			<option value="Ak">D</option>
@@ -109,6 +92,8 @@
 	
 	
 	$.fn.select2multiple  = function(){
+
+
 		
 		$(this).select2({
 			templateSelection : templateSel,
@@ -130,6 +115,7 @@
 		  	if (text.text.toUpperCase().indexOf(term.term.toUpperCase().trim()) == 0) {
 			    return text;
 			}
+			debugger;
 			return false;
 		  }
 		  return text;
@@ -166,7 +152,6 @@
 									dropList[i].setAttribute('aria-selected',false);
 						}
 						$(".selectedDisplayList input")[0].value = " ";
-						
 					}
 				}
 			}.bind(this));
@@ -237,11 +222,9 @@
 		  return $state;
 		}
 
-		
-		
 	}
 	$("#CountryIdList").select2multiple();
-	$("#CountryIdList1").select2();
+	$("#CountryIdList1").select2multiple();
 	
 	
 	
